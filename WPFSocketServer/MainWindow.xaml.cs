@@ -78,7 +78,7 @@ namespace WPFSocketServer
             //string str = "Hello World";
             //var data = Encoding.UTF8.GetBytes(str.ToString());
 
-            string strSendData = "asfsadf";
+            string strSendData = "요야유";
             System.Globalization.CultureInfo culInfo = new System.Globalization.CultureInfo("en-US");
 
             // http프로토콜로 보내기
@@ -86,7 +86,7 @@ namespace WPFSocketServer
             sb.AppendLine("HTTP/1.1 200 ok");
             sb.AppendLine("date: " + DateTime.UtcNow.ToString("ddd, dd MMM yyy HH':'mm':'ss 'GMT'", culInfo));
             sb.AppendLine("server: test server");
-            sb.AppendLine("Content-Length: " + strSendData.Length);
+            sb.AppendLine("Content-Length: " + (Encoding.UTF8.GetBytes(strSendData)).Length);
             sb.AppendLine("content-type:text/html; charset=UTF-8");
             sb.AppendLine();
             sb.AppendLine(strSendData);
