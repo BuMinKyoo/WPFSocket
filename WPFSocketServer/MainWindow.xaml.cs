@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Windows;
 
 namespace WPFSocketServer
@@ -74,16 +75,31 @@ namespace WPFSocketServer
 
         private void SendData(Socket workingSocket)
         {
-            string str = "Hello World";
-            var data = Encoding.UTF8.GetBytes(str.ToString());
+            //string str = "Hello World";
+            //var data = Encoding.UTF8.GetBytes(str.ToString());
+
+            string strSendData = "asfsadf";
+            System.Globalization.CultureInfo culInfo = new System.Globalization.CultureInfo("en-US");
+
+            // http프로토콜로 보내기
+            StringBuilder sb = new StringBuilder(100);
+            sb.AppendLine("HTTP/1.1 200 ok");
+            sb.AppendLine("date: " + DateTime.UtcNow.ToString("ddd, dd MMM yyy HH':'mm':'ss 'GMT'", culInfo));
+            sb.AppendLine("server: test server");
+            sb.AppendLine("Content-Length: " + strSendData.Length);
+            sb.AppendLine("content-type:text/html; charset=UTF-8");
+            sb.AppendLine();
+            sb.AppendLine(strSendData);
+            var bytes = Encoding.UTF8.GetBytes(sb.ToString());
 
             try
             {
                 // 데이터를 클라이언트에게 보냅니다.
-                int bytesSent = workingSocket.Send(data);
+                int bytesSent = workingSocket.Send(bytes);
+                Thread.Sleep(10);
 
                 // 데이터 전송 성공 여부 확인
-                if (bytesSent == data.Length)
+                if (bytesSent == bytes.Length)
                 {
                     Debug.WriteLine("데이터를 클라이언트에게 성공적으로 보냈습니다.");
                 }
